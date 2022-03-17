@@ -6,8 +6,8 @@ import (
 )
 
 type Card struct {
-	suit  string
 	value string
+	suit  string
 }
 
 type deck []Card
@@ -15,7 +15,7 @@ type deck []Card
 func GetDeck() deck {
 	var d deck
 
-	var suits = []string{"spades", "clubs", "hearts", "diamonds"}
+	var suits = []string{"❤️", "♣️", "♠️", "♦️"}
 	var values = []string{"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"}
 
 	for _, s := range suits {
