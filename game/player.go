@@ -3,6 +3,7 @@ package game
 type Player struct {
 	name  string
 	chips int
+	hand  []Card
 }
 
 func (p Player) AddChips(toAdd int) {

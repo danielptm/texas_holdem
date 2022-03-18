@@ -8,12 +8,13 @@ import (
 type Card struct {
 	value string
 	suit  string
+	order int
 }
 
-type deck []Card
+type Deck []Card
 
-func GetDeck() deck {
-	var d deck
+func GetDeck() Deck {
+	var d Deck
 
 	var suits = []string{"❤️", "♣️", "♠️", "♦️"}
 	var values = []string{"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"}
@@ -27,7 +28,7 @@ func GetDeck() deck {
 	return d
 }
 
-func (d deck) Shuffle() deck {
+func (d Deck) Shuffle() Deck {
 	source := rand.NewSource(time.Now().UnixNano())
 	r := rand.New(source)
 	for i := range d {
@@ -37,7 +38,7 @@ func (d deck) Shuffle() deck {
 	return d
 }
 
-func DrawTopCard(d deck) (Card, deck) {
+func DrawTopCard(d Deck) (Card, Deck) {
 	card := d[0]
 	d = d[1:]
 	return card, d

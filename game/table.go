@@ -13,7 +13,7 @@ type Table struct {
 
 func Start() {
 	players := []Player{{name: "Daniel", chips: 100}, {name: "Computer", chips: 100}}
-	community := []Card{{suit: "♠️", value: "3"}, {suit: "❤️", value: "5"}, {suit: "♣️", value: "5"}}
+	community := []Card{{suit: SPADES, value: "3"}, {suit: HEARTS, value: "5"}, {suit: CLUBS, value: "5"}}
 	var game = Table{players: players, community: community, button: players[0], pot: 13}
 	game.Status()
 	//deck := GetDeck()
@@ -28,7 +28,7 @@ func (g Table) Status() {
 	fmt.Println("")
 	fmt.Printf("Player: %s, Chips: %d", g.players[1].name, g.players[1].chips)
 	fmt.Println("")
-	fmt.Printf("Community: %s", g.community)
+	fmt.Printf("Community: %s", stringifyCommunity(g.community))
 	fmt.Println("")
 	fmt.Printf("Button: %s", g.button.name)
 	fmt.Println("")
@@ -36,4 +36,12 @@ func (g Table) Status() {
 	fmt.Println("")
 	fmt.Println("---------------------------------------------")
 	fmt.Println("")
+}
+
+func stringifyCommunity(cards []Card) string {
+	res := ""
+	for _, c := range cards {
+		res = c.value + ":" + c.suit
+	}
+	return res
 }
