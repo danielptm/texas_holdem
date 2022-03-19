@@ -19,10 +19,12 @@ func TestDealPlayers(t *testing.T) {
 		hand:  make([]Card, 2),
 	}
 
-	var p1, p2, d = DealPlayers(p, c, deck)
+	table := Table{players: []Player{p, c}}
 
-	assert.Equal(t, 2, len(p1.hand))
-	assert.Equal(t, 2, len(p2.hand))
+	var t1, d = DealPlayers(table, deck)
+
+	assert.Equal(t, 2, len(t1.players[0].hand))
+	assert.Equal(t, 2, len(t1.players[1].hand))
 	assert.Equal(t, 48, len(d))
 }
 

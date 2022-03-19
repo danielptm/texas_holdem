@@ -5,6 +5,7 @@ Play a hand return true if a next hand should happen, otherwise false if game is
 */
 func PlayHand(deck Deck, table Table) bool {
 	//Deal cards to players
+	//table, dealtDeck = DealPlayers(table, deck)
 	//Players bet
 	//DoFlop
 	//PlayersBet
@@ -16,14 +17,15 @@ func PlayHand(deck Deck, table Table) bool {
 	//GetWinner
 	//TransferChips
 	//Return true if nobody is out, false if game is over.
+	return false
 }
 
-func DealPlayers(player1 Player, player2 Player, deck Deck) (Player, Player, Deck) {
+func DealPlayers(table Table, deck Deck) (Table, Deck) {
 	cards1 := deck[0:2]
 	cards2 := deck[2:4]
-	player1.hand = cards1
-	player2.hand = cards2
-	return player1, player2, deck[4:]
+	table.players[0].hand = cards1
+	table.players[1].hand = cards2
+	return table, deck[4:]
 }
 
 func DoFlop(table Table, deck Deck) (Table, Deck) {
