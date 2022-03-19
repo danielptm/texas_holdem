@@ -83,6 +83,66 @@ func TestGetHighCard(t *testing.T) {
 	assert.Equal(t, 11, res.order)
 }
 
+func TestHasStraightFlush(t *testing.T) {
+	table := Table{
+		players:   []Player{{name: "Daniel", chips: 100}, {name: "Computer", chips: 100}},
+		community: []Card{{suit: HEARTS, value: TWO, order: 2}, {suit: DIAMONDS, value: THREE, order: 3}, {suit: SPADES, value: QUEEN, order: 12}, {suit: SPADES, value: KING, order: 13}, {suit: SPADES, value: ACE, order: 14}},
+		button:    Player{name: "Daniel", chips: 100},
+		pot:       25,
+	}
+
+	p := Player{name: "d", chips: 1, hand: []Card{{suit: SPADES, value: TEN, order: 10}, {suit: SPADES, value: JACK, order: 11}}}
+
+	res1 := GetHighCardForPlayer(table, p)
+
+	assert.Equal(t, 14, res1.order)
+}
+
+func TestHasPair(t *testing.T) {
+	table := Table{
+		players:   []Player{{name: "Daniel", chips: 100}, {name: "Computer", chips: 100}},
+		community: []Card{{suit: HEARTS, value: TEN, order: 2}, {suit: DIAMONDS, value: THREE, order: 3}, {suit: SPADES, value: QUEEN, order: 12}, {suit: SPADES, value: KING, order: 13}, {suit: SPADES, value: ACE, order: 14}},
+		button:    Player{name: "Daniel", chips: 100},
+		pot:       25,
+	}
+
+	p := Player{name: "d", chips: 1, hand: []Card{{suit: SPADES, value: TEN, order: 10}, {suit: SPADES, value: JACK, order: 11}}}
+
+	res1 := HasPair(p, table)
+
+	assert.Equal(t, true, res1)
+}
+
+func TestHasTwoPair(t *testing.T) {
+	table := Table{
+		players:   []Player{{name: "Daniel", chips: 100}, {name: "Computer", chips: 100}},
+		community: []Card{{suit: HEARTS, value: TEN, order: 2}, {suit: DIAMONDS, value: THREE, order: 3}, {suit: SPADES, value: QUEEN, order: 12}, {suit: SPADES, value: KING, order: 13}, {suit: SPADES, value: ACE, order: 14}},
+		button:    Player{name: "Daniel", chips: 100},
+		pot:       25,
+	}
+
+	p := Player{name: "d", chips: 1, hand: []Card{{suit: SPADES, value: TEN, order: 10}, {suit: SPADES, value: THREE, order: 3}}}
+
+	res1 := HasTwoPair(p, table)
+
+	assert.Equal(t, true, res1)
+}
+
+func TestHasThreeOfKind(t *testing.T) {
+	table := Table{
+		players:   []Player{{name: "Daniel", chips: 100}, {name: "Computer", chips: 100}},
+		community: []Card{{suit: HEARTS, value: TEN, order: 2}, {suit: DIAMONDS, value: THREE, order: 3}, {suit: SPADES, value: QUEEN, order: 12}, {suit: SPADES, value: KING, order: 13}, {suit: SPADES, value: ACE, order: 14}},
+		button:    Player{name: "Daniel", chips: 100},
+		pot:       25,
+	}
+
+	p := Player{name: "d", chips: 1, hand: []Card{{suit: SPADES, value: TEN, order: 10}, {suit: CLUBS, value: THREE, order: 3}}}
+
+	res1 := HasTwoPair(p, table)
+
+	assert.Equal(t, true, res1)
+}
+
 //func TestHasRoyalFlush(t *testing.T) {
 //	table := Table{
 //		players:   []Player{{name: "Daniel", chips: 100}, {name: "Computer", chips: 100}},
@@ -96,16 +156,4 @@ func TestGetHighCard(t *testing.T) {
 //	res := HasRoyalFlush(table, p)
 //
 //	assert.Equal(t, true, res)
-//}
-
-//func TestHasHighCard(t *testing.T) {
-//	table := Table{
-//		players:   []Player{{name: "Daniel", chips: 100}, {name: "Computer", chips: 100}},
-//		community: []Card{{suit: HEARTS, value: TWO}, {suit: DIAMONDS, value: THREE}, {suit: SPADES, value: QUEEN}, {suit: SPADES, value: KING}, {suit: SPADES, value: ACE}},
-//		button:    Player{name: "Daniel", chips: 100},
-//		pot:       25,
-//	}
-//
-//	p := Player{name: "d", chips: 1, hand: []Card{{suit: SPADES, value: TEN}, {suit: SPADES, value: JACK}}}
-//
 //}

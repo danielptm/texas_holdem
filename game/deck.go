@@ -18,10 +18,11 @@ func GetDeck() Deck {
 
 	var suits = []string{"❤️", "♣️", "♠️", "♦️"}
 	var values = []string{"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"}
+	var order = []int{2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14}
 
 	for _, s := range suits {
-		for _, v := range values {
-			var c = Card{suit: s, value: v}
+		for i, v := range values {
+			var c = Card{suit: s, value: v, order: order[i]}
 			d = append(d, c)
 		}
 	}

@@ -1,5 +1,23 @@
 package game
 
+/**
+Play a hand return true if a next hand should happen, otherwise false if game is over.
+*/
+func PlayHand(deck Deck, table Table) bool {
+	//Deal cards to players
+	//Players bet
+	//DoFlop
+	//PlayersBet
+	//DoTurn
+	//PlayersBet
+	//DoRiver
+	//PlayersBet
+	//CompareHands
+	//GetWinner
+	//TransferChips
+	//Return true if nobody is out, false if game is over.
+}
+
 func DealPlayers(player1 Player, player2 Player, deck Deck) (Player, Player, Deck) {
 	cards1 := deck[0:2]
 	cards2 := deck[2:4]
@@ -23,10 +41,18 @@ func DoRiver(table Table, deck Deck) (Table, Deck) {
 	return table, deck[1:]
 }
 
-//func HasRoyalFlush(table Table, player Player) bool {
-//
-//	return false
-//}
+func GetBestHand(table Table, player Player) string {
+	if HasThreeOfKind(player, table) {
+		return THREE_OF_A_KIND
+	}
+	if HasTwoPair(player, table) {
+		return TWO_PAIR
+	}
+	if HasPair(player, table) {
+		return PAIR
+	}
+	return HIGH_CARD
+}
 
 func GetHighCardForPlayer(table Table, player Player) Card {
 	highCard := Card{
@@ -46,31 +72,71 @@ func GetHighCardForPlayer(table Table, player Player) Card {
 	return highCard
 }
 
+func HasPair(player Player, table Table) bool {
+	for _, p_c := range player.hand {
+		for _, t_c := range table.community {
+			if p_c.value == t_c.value {
+				return true
+			}
+		}
+	}
+	return false
+}
+
+func HasTwoPair(player Player, table Table) bool {
+	pairNums := 0
+	for _, p_c := range player.hand {
+		for _, t_c := range table.community {
+			if p_c.value == t_c.value {
+				pairNums = pairNums + 2
+			}
+		}
+	}
+	if pairNums >= 4 {
+		return true
+	} else {
+		return false
+	}
+}
+
+func HasThreeOfKind(player Player, table Table) bool {
+	pairNums := 0
+	for _, p_c := range player.hand {
+		for _, t_c := range table.community {
+			if p_c.value == t_c.value {
+				pairNums = pairNums + 1
+			}
+		}
+	}
+	if pairNums == 3 {
+		return true
+	} else {
+		return false
+	}
+}
+
+func HasStraight() bool {
+	return false
+}
+
+func HasFlush() bool {
+	return false
+}
+
 //func HasStraightFlush() bool {
 //	return ""
 //}
 //
-//func HasStraight() bool {
-//	return ""
-//}
-//
-//func HasFlush() bool {
-//	return ""
-//}
+
 //
 //func HasFourOfKind() bool {
 //	return ""
 //}
 //
-//func HasThreeOfKind() bool {
-//	return ""
-//}
+
 //
-//func HasTwoPair() bool {
-//	return ""
-//}
+
+//func HasRoyalFlush(table Table, player Player) bool {
 //
-//func HasPair() bool {
-//	return ""
+//	return false
 //}
-//
