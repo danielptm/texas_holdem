@@ -1,7 +1,12 @@
 package main
 
-func main() {
+import (
+	"go_holdem/game"
+)
 
+func main() {
+	t := game.BuildTable()
+	game.PlayHand(t)
 }
 
 //x := game.GetChips()

@@ -1,26 +1,41 @@
 package game
 
-import "fmt"
-
 /**
 Play a hand return true if a next hand should happen, otherwise false if game is over.
 */
 func PlayHand(table Table) bool {
 	//Deal cards to players
-	dealtTable := DealPlayers(table)
-	fmt.Println(dealtTable)
-	//Players bet
-	//DoFlop
-	//PlayersBet
-	//DoTurn
-	//PlayersBet
-	//DoRiver
-	//PlayersBet
-	//CompareHands
-	//GetWinner
-	//TransferChips
-	//Return true if nobody is out, false if game is over.
-	return false
+	table.deck = table.deck.Shuffle()
+	table = DealPlayers(table)
+	println("Welcome to Daniel's GO build texas holdem for 2 players.")
+	playerBet, _ := PokerIO{reader: new(ScanImpl)}.GetChips()
+	computerBet := 5
+	table.players[0].chips = table.players[0].chips - computerBet
+	table.players[1].chips = table.players[1].chips - playerBet
+	table.pot = table.pot + (playerBet + computerBet)
+	table.Status("PRE-FLOP")
+	table = DoFlop(table)
+	table.Status("POST-FLOP")
+	playerBet2, _ := PokerIO{reader: new(ScanImpl)}.GetChips()
+	computerBet2 := 5
+	table.players[0].chips = table.players[0].chips - computerBet2
+	table.players[1].chips = table.players[1].chips - playerBet2
+	table.pot = table.pot + (playerBet2 + computerBet2)
+	table = DoTurn(table)
+	table.Status("POST-TURN")
+	playerBet3, _ := PokerIO{reader: new(ScanImpl)}.GetChips()
+	computerBet3 := 5
+	table.players[0].chips = table.players[0].chips - computerBet3
+	table.players[1].chips = table.players[1].chips - playerBet3
+	table.pot = table.pot + (playerBet3 + computerBet3)
+	table = DoRiver(table)
+	table.Status("POST-RIVER")
+	playerBet4, _ := PokerIO{reader: new(ScanImpl)}.GetChips()
+	computerBet4 := 5
+	table.players[0].chips = table.players[0].chips - computerBet4
+	table.players[1].chips = table.players[1].chips - playerBet4
+	table.pot = table.pot + (playerBet4 + computerBet4)
+	return true
 }
 
 func DealPlayers(table Table) Table {
