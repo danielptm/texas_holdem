@@ -1,11 +1,14 @@
 package game
 
+import "fmt"
+
 /**
 Play a hand return true if a next hand should happen, otherwise false if game is over.
 */
-func PlayHand(deck Deck, table Table) bool {
+func PlayHand(table Table) bool {
 	//Deal cards to players
-	//table, dealtDeck = DealPlayers(table, deck)
+	dealtTable := DealPlayers(table)
+	fmt.Println(dealtTable)
 	//Players bet
 	//DoFlop
 	//PlayersBet
@@ -20,27 +23,31 @@ func PlayHand(deck Deck, table Table) bool {
 	return false
 }
 
-func DealPlayers(table Table, deck Deck) (Table, Deck) {
-	cards1 := deck[0:2]
-	cards2 := deck[2:4]
+func DealPlayers(table Table) Table {
+	cards1 := table.deck[0:2]
+	cards2 := table.deck[2:4]
 	table.players[0].hand = cards1
 	table.players[1].hand = cards2
-	return table, deck[4:]
+	table.deck = table.deck[4:]
+	return table
 }
 
-func DoFlop(table Table, deck Deck) (Table, Deck) {
-	table.community[0], table.community[1], table.community[2] = deck[0], deck[1], deck[2]
-	return table, deck[3:]
+func DoFlop(table Table) Table {
+	table.community[0], table.community[1], table.community[2] = table.deck[0], table.deck[1], table.deck[2]
+	table.deck = table.deck[3:]
+	return table
 }
 
-func DoTurn(table Table, deck Deck) (Table, Deck) {
-	table.community[3] = deck[0]
-	return table, deck[1:]
+func DoTurn(table Table) Table {
+	table.community[3] = table.deck[0]
+	table.deck = table.deck[1:]
+	return table
 }
 
-func DoRiver(table Table, deck Deck) (Table, Deck) {
-	table.community[4] = deck[0]
-	return table, deck[1:]
+func DoRiver(table Table) Table {
+	table.community[4] = table.deck[0]
+	table.deck = table.deck[1:]
+	return table
 }
 
 func GetBestHand(table Table, player Player) string {

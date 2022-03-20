@@ -1,7 +1,6 @@
 package game
 
 import (
-	"fmt"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -19,60 +18,60 @@ func TestDealPlayers(t *testing.T) {
 		hand:  make([]Card, 2),
 	}
 
-	table := Table{players: []Player{p, c}}
+	table := Table{deck: deck, players: []Player{p, c}}
 
-	var t1, d = DealPlayers(table, deck)
+	var t1 = DealPlayers(table)
 
 	assert.Equal(t, 2, len(t1.players[0].hand))
 	assert.Equal(t, 2, len(t1.players[1].hand))
-	assert.Equal(t, 48, len(d))
+	assert.Equal(t, 48, len(t1.deck))
 }
 
 func TestDoFlop(t *testing.T) {
-	var table = Table{
-		[]Player{}, make([]Card, 5), Player{}, 1,
-	}
-
 	d := GetDeck()
 
-	r1, r2 := DoFlop(table, d)
-	fmt.Println(r2)
+	var table = Table{
+		d, []Player{}, make([]Card, 5), Player{}, 1,
+	}
+
+	r1 := DoFlop(table)
+	//fmt.Println(r2)
 
 	assert.NotEqual(t, "", r1.community[0])
 	assert.NotEqual(t, "", r1.community[1])
 	assert.NotEqual(t, "", r1.community[2])
-	assert.Equal(t, 49, len(r2))
+	assert.Equal(t, 49, len(r1.deck))
 }
 
 func TestDoTurn(t *testing.T) {
-	var table = Table{
-		[]Player{}, make([]Card, 5), Player{}, 1,
-	}
-
 	d := GetDeck()
 
-	r1, r2 := DoTurn(table, d)
+	var table = Table{
+		d, []Player{}, make([]Card, 5), Player{}, 1,
+	}
+
+	r1 := DoTurn(table)
 
 	assert.NotEqual(t, "", r1.community[3].value)
-	assert.Equal(t, 51, len(r2))
+	assert.Equal(t, 51, len(r1.deck))
 }
 
 func TestDoRiver(t *testing.T) {
+	d := GetDeck()
 	var table = Table{
-		[]Player{}, make([]Card, 5), Player{}, 1,
+		d, []Player{}, make([]Card, 5), Player{}, 1,
 	}
 
-	d := GetDeck()
-
-	r1, r2 := DoRiver(table, d)
+	r1 := DoRiver(table)
 
 	assert.NotEqual(t, "", r1.community[4].value)
-	assert.Equal(t, 51, len(r2))
+	assert.Equal(t, 51, len(r1.deck))
 }
 
 func TestGetHighCard(t *testing.T) {
+	d := GetDeck()
 	var table = Table{
-		[]Player{}, []Card{{suit: SPADES, order: 5}, {suit: DIAMONDS, order: 8}, {suit: HEARTS, order: 10}, {suit: CLUBS, order: 11}, {suit: SPADES, order: 6}}, Player{}, 1,
+		d, []Player{}, []Card{{suit: SPADES, order: 5}, {suit: DIAMONDS, order: 8}, {suit: HEARTS, order: 10}, {suit: CLUBS, order: 11}, {suit: SPADES, order: 6}}, Player{}, 1,
 	}
 
 	player := Player{

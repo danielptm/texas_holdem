@@ -5,6 +5,7 @@ import (
 )
 
 type Table struct {
+	deck      Deck
 	players   []Player
 	community []Card
 	button    Player
