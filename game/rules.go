@@ -1,5 +1,7 @@
 package game
 
+import "fmt"
+
 /**
 Play a hand return true if a next hand should happen, otherwise false if game is over.
 */
@@ -7,35 +9,53 @@ func PlayHand(table Table) bool {
 	//Deal cards to players
 	table.deck = table.deck.Shuffle()
 	table = DealPlayers(table)
-	println("Welcome to Daniel's GO build texas holdem for 2 players.")
-	playerBet, _ := PokerIO{reader: new(ScanImpl)}.GetChips()
-	computerBet := 5
-	table.players[0].chips = table.players[0].chips - computerBet
-	table.players[1].chips = table.players[1].chips - playerBet
-	table.pot = table.pot + (playerBet + computerBet)
-	table.Status("PRE-FLOP")
+	println("Welcome to Daniel's GO texas holdem for 2 players.")
+	table = DoBetting("PRE-FLOP", table)
 	table = DoFlop(table)
-	table.Status("POST-FLOP")
-	playerBet2, _ := PokerIO{reader: new(ScanImpl)}.GetChips()
-	computerBet2 := 5
-	table.players[0].chips = table.players[0].chips - computerBet2
-	table.players[1].chips = table.players[1].chips - playerBet2
-	table.pot = table.pot + (playerBet2 + computerBet2)
+	table = DoBetting("POST-FLOP", table)
 	table = DoTurn(table)
-	table.Status("POST-TURN")
-	playerBet3, _ := PokerIO{reader: new(ScanImpl)}.GetChips()
-	computerBet3 := 5
-	table.players[0].chips = table.players[0].chips - computerBet3
-	table.players[1].chips = table.players[1].chips - playerBet3
-	table.pot = table.pot + (playerBet3 + computerBet3)
+	table = DoBetting("POST-TURN", table)
 	table = DoRiver(table)
-	table.Status("POST-RIVER")
-	playerBet4, _ := PokerIO{reader: new(ScanImpl)}.GetChips()
-	computerBet4 := 5
-	table.players[0].chips = table.players[0].chips - computerBet4
-	table.players[1].chips = table.players[1].chips - playerBet4
-	table.pot = table.pot + (playerBet4 + computerBet4)
+	table = DoBetting("POST-RIVER", table)
+	computerHand := GetBestHand(table, table.players[0])
+	playerHand := GetBestHand(table, table.players[1])
+	fmt.Printf("Computer hand: %s", computerHand)
+	fmt.Println("")
+	fmt.Printf("My hand: %s", playerHand)
+	fmt.Println("")
+	//gameIsOver := GameIsOver(table.players[0], table.players[1])
+	//if gameIsOver {
+	//	return true
+	//}
+	//return PlayHand(table)
 	return true
+}
+
+//TODO: Do this
+func DoBetting(round string, table Table) Table {
+	roundStatus := round
+	computerTotal := 0
+	playerTotal := 0
+	for true {
+		table.Status(roundStatus)
+		playerBet, _ := PokerIO{reader: new(ScanImpl)}.GetChips()
+		playerTotal = playerTotal + playerBet
+		computerBet := playerBet
+		computerTotal = computerTotal + computerBet
+		fmt.Println("***")
+		fmt.Printf("You bet: %d, Computer bet: %d", playerBet, computerBet)
+		fmt.Println("\n***")
+		table.players[0].chips = table.players[0].chips - computerBet
+		table.players[1].chips = table.players[1].chips - playerBet
+		table.pot = table.pot + (playerBet + computerBet)
+		if computerTotal == playerTotal {
+			break
+		} else {
+			roundStatus = "CALL RAISE"
+		}
+	}
+
+	return table
 }
 
 func DealPlayers(table Table) Table {
@@ -137,6 +157,13 @@ func HasThreeOfKind(player Player, table Table) bool {
 	} else {
 		return false
 	}
+}
+
+func GameIsOver(player1 Player, player2 Player) bool {
+	if player1.chips <= 0 || player2.chips <= 0 {
+		return true
+	}
+	return false
 }
 
 func HasStraight() bool {
